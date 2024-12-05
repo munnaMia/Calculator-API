@@ -1,9 +1,8 @@
 package main
 
-type application struct{
-
+type application struct {
 }
 
-func main(){
-	
+func main() {
+
 }
