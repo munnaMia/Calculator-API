@@ -5,10 +5,12 @@ import (
 	"net/http"
 )
 
-type Application struct{}
+type Application struct{
+	data map[string]int
+}
 
 func main() {
-	app := Application{}
+	app := &Application{}
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", app.home)
