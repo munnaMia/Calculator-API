@@ -1,41 +1,21 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, "NOT FOUND 404")
-		return
-	}
-	fmt.Fprintf(w, "home route")
-}
-
-func handleAdd(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "add two numbers")
-}
-func handleSubtract(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "subtract two numbers")
-}
-func handleMultiply(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "multiply two numbers")
-}
-func handleDivide(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "divide two numbers")
-}
+type Application struct{}
 
 func main() {
+	app := Application{}
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", home)
-	mux.HandleFunc("/add", handleAdd)
-	mux.HandleFunc("/subtract", handleSubtract)
-	mux.HandleFunc("/multply", handleMultiply)
-	mux.HandleFunc("/divide", handleDivide)
+	mux.HandleFunc("/", app.home)
+	mux.HandleFunc("/add", app.handleAdd)
+	mux.HandleFunc("/subtract", app.handleSubtract)
+	mux.HandleFunc("/multply", app.handleMultiply)
+	mux.HandleFunc("/divide", app.handleDivide)
 
 	server := &http.Server{
 		Addr:    "localhost:8080",
