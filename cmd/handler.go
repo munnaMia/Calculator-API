@@ -70,5 +70,18 @@ func (app *Application) handleMultiply(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) handleDivide(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "divide two numbers")
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", "POST")
+		http.Error(w, "METHOD NOT ALLOWED", http.StatusMethodNotAllowed)
+		return
+	}
+
+	reqBody := utils.MUST(io.ReadAll(r.Body)) // Read Request body
+
+	err := json.Unmarshal(reqBody, &app.data)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Fprintf(w, "Division of two numbers is : %d", app.data["a"]/app.data["b"])
 }
