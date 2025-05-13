@@ -1,10 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/munnaMia/Calculator-API/internals/utils"
 )
 
 func (app *Application) home(w http.ResponseWriter, r *http.Request) {
@@ -21,12 +24,15 @@ func (app *Application) handleAdd(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "METHOD NOT ALLOWED", http.StatusMethodNotAllowed)
 		return
 	}
-	reqBody, err := io.ReadAll(r.Body)
+
+	reqBody := utils.MUST(io.ReadAll(r.Body)) // Read Request body
+
+	err := json.Unmarshal(reqBody, &app.data)
 	if err != nil {
-		log.Fatal("Failed to read requestbody", err)
+		log.Fatal(err)
 	}
 
-	fmt.Fprintf(w, "add of two numbers is : %s", reqBody)
+	fmt.Fprintf(w, "add of two numbers is : %d", app.data["a"]+app.data["b"])
 }
 func (app *Application) handleSubtract(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "subtract two numbers")
