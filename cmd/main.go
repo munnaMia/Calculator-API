@@ -7,6 +7,7 @@ import (
 
 type Application struct{
 	data map[string]int
+	help string
 }
 
 func main() {
@@ -16,7 +17,7 @@ func main() {
 	mux.HandleFunc("/", app.home)
 	mux.HandleFunc("/add", app.handleAdd)
 	mux.HandleFunc("/subtract", app.handleSubtract)
-	mux.HandleFunc("/multply", app.handleMultiply)
+	mux.HandleFunc("/multiply", app.handleMultiply)
 	mux.HandleFunc("/divide", app.handleDivide)
 
 	server := &http.Server{

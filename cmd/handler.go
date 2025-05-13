@@ -15,7 +15,21 @@ func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "NOT FOUND 404", http.StatusNotFound)
 		return
 	}
-	fmt.Fprintf(w, "home route")
+
+	app.help = `
+	Hey try this URLs  and send some POST requests to them
+
+	no 1 : http://localhost:8080/add --------> to add two number
+	no 2 : http://localhost:8080/subtract ---> to subtract two number
+	no 3 : http://localhost:8080/multiply ---> to multiply two number
+	no 4 : http://localhost:8080/divide -----> to divide two number
+
+	follow this architecture to send json data : '{"a":int, "b":int}'
+
+	!use a & b as the key.
+	!use int values only.
+	`
+	fmt.Fprintf(w, "%s", app.help)
 }
 
 func (app *Application) handleAdd(w http.ResponseWriter, r *http.Request) {
