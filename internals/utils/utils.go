@@ -2,9 +2,9 @@ package utils
 
 import "log"
 
-func MUST[T any](value T, err error, msg string) T {
+func MUST[T any](value T, err error) T {
 	if err != nil {
-		log.Fatal(msg, " : ", err)
+		log.Fatal(err)
 	}
 	return value
 }
