@@ -53,7 +53,20 @@ func (app *Application) handleSubtract(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) handleMultiply(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "multiply two numbers")
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", "POST")
+		http.Error(w, "METHOD NOT ALLOWED", http.StatusMethodNotAllowed)
+		return
+	}
+
+	reqBody := utils.MUST(io.ReadAll(r.Body)) // Read Request body
+
+	err := json.Unmarshal(reqBody, &app.data)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Fprintf(w, "Multiply of two numbers is : %d", app.data["a"]*app.data["b"])
 }
 
 func (app *Application) handleDivide(w http.ResponseWriter, r *http.Request) {
